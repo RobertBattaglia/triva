@@ -6,21 +6,25 @@ import CategorySelect from "./components/CategorySelect";
 import DifficultySelect from "./components/DifficultySelect";
 import NumberSelect from "./components/NumberSelect";
 import StartGameButton from "./components/StartGameButton";
+import QuitGameButton from "./components/QuitGameButton";
+
+const initState = {
+  gameInProgress: false,
+  number: 5,
+  category: 9,
+  difficulty: "easy",
+  questions: []
+};
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      gameInProgress: false,
-      number: 5,
-      category: 9,
-      difficulty: "easy",
-      questions: []
-    };
+    this.state = initState;
     this.setCategory = this.setCategory.bind(this);
     this.setDifficulty = this.setDifficulty.bind(this);
     this.setNumber = this.setNumber.bind(this);
     this.startGame = this.startGame.bind(this);
+    this.quitGame = this.quitGame.bind(this);
   }
 
   setNumber(value) {
@@ -49,6 +53,10 @@ class App extends Component {
       });
   }
 
+  quitGame() {
+    this.setState(initState);
+  }
+
   render() {
     const renderGameInProgress = () => {
       return !this.state.gameInProgress ? (
@@ -59,7 +67,7 @@ class App extends Component {
           <StartGameButton handleStartGame={this.startGame} />
         </React.Fragment>
       ) : (
-        <p>game in progress</p>
+        <QuitGameButton handleQuitGame={this.quitGame} />
       );
     };
 
