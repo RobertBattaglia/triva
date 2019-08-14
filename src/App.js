@@ -26,6 +26,7 @@ class App extends Component {
     this.setNumber = this.setNumber.bind(this);
     this.startGame = this.startGame.bind(this);
     this.quitGame = this.quitGame.bind(this);
+    this.checkQuestion = this.checkQuestion.bind(this);
   }
 
   setNumber(value) {
@@ -58,6 +59,17 @@ class App extends Component {
     this.setState(initState);
   }
 
+  checkQuestion(val) {
+    if (val === this.state.questions[0].correct_answer) {
+      console.log("correct");
+    } else {
+      console.log("incorrect");
+    }
+    const questions = this.state.questions.slice();
+    questions.shift();
+    this.setState({ questions });
+  }
+
   render() {
     const renderGameInProgress = () => {
       return !this.state.gameInProgress ? (
@@ -70,7 +82,10 @@ class App extends Component {
       ) : (
         <React.Fragment>
           <QuitGameButton handleQuitGame={this.quitGame} />
-          <GameBoard question={this.state.questions[0]} />
+          <GameBoard
+            question={this.state.questions[0]}
+            handleCheckQuestion={this.checkQuestion}
+          />
         </React.Fragment>
       );
     };
