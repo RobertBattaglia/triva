@@ -8,13 +8,15 @@ import NumberSelect from "./components/NumberSelect";
 import StartGameButton from "./components/StartGameButton";
 import QuitGameButton from "./components/QuitGameButton";
 import GameBoard from "./components/GameBoard";
+import ResultBoard from "./components/ResultBoard";
 
 const initState = {
   gameInProgress: false,
   number: 5,
   category: 9,
   difficulty: "easy",
-  questions: []
+  questions: [],
+  score: 0
 };
 
 class App extends Component {
@@ -71,21 +73,36 @@ class App extends Component {
   }
 
   render() {
+    const {
+      setNumber,
+      setCategory,
+      setDifficulty,
+      startGame,
+      quitGame,
+      checkQuestion
+    } = this;
+    const { gameInProgress, questions, score } = this.state;
+
     const renderGameInProgress = () => {
-      return !this.state.gameInProgress ? (
+      return !gameInProgress ? (
         <React.Fragment>
-          <NumberSelect handleSetNumber={this.setNumber} />
-          <CategorySelect handleSetCategory={this.setCategory} />
-          <DifficultySelect handleSetDifficulty={this.setDifficulty} />
-          <StartGameButton handleStartGame={this.startGame} />
+          <NumberSelect handleSetNumber={setNumber} />
+          <CategorySelect handleSetCategory={setCategory} />
+          <DifficultySelect handleSetDifficulty={setDifficulty} />
+          <StartGameButton handleStartGame={startGame} />
+        </React.Fragment>
+      ) : questions.length ? (
+        <React.Fragment>
+          <QuitGameButton word={"Quit Game"} handleQuitGame={quitGame} />
+          <GameBoard
+            question={questions[0]}
+            handleCheckQuestion={checkQuestion}
+          />
         </React.Fragment>
       ) : (
         <React.Fragment>
-          <QuitGameButton handleQuitGame={this.quitGame} />
-          <GameBoard
-            question={this.state.questions[0]}
-            handleCheckQuestion={this.checkQuestion}
-          />
+          <QuitGameButton word={"Play Again"} handleQuitGame={quitGame} />
+          <ResultBoard score={score} />
         </React.Fragment>
       );
     };
