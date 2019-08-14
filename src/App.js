@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import "./App.css";
 
 import axios from "axios";
+import CategorySelect from "./components/CategorySelect";
 
 class App extends Component {
   constructor(props) {
     super(props);
-
     this.state = { questions: [] };
   }
 
@@ -34,6 +34,7 @@ class App extends Component {
         <header className="App-header" />
         <main>
           <h1>Trivia</h1>
+          <CategorySelect />
         </main>
       </div>
     );
