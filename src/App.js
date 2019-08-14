@@ -5,6 +5,7 @@ import axios from "axios";
 import CategorySelect from "./components/CategorySelect";
 import DifficultySelect from "./components/DifficultySelect";
 import NumberSelect from "./components/NumberSelect";
+import StartGameButton from "./components/StartGameButton";
 
 class App extends Component {
   constructor(props) {
@@ -13,10 +14,7 @@ class App extends Component {
     this.setCategory = this.setCategory.bind(this);
     this.setDifficulty = this.setDifficulty.bind(this);
     this.setNumber = this.setNumber.bind(this);
-  }
-
-  componentDidMount() {
-    this.startGame(10, "general", "easy");
+    this.startGame = this.startGame.bind(this);
   }
 
   setNumber(value) {
@@ -32,8 +30,11 @@ class App extends Component {
   }
 
   startGame() {
+    const { number, category, difficulty } = this.state;
     axios
-      .get("https://opentdb.com/api.php?amount=10&difficulty=easy")
+      .get(
+        `https://opentdb.com/api.php?amount=${number}&category=${category}&difficulty=${difficulty}`
+      )
       .then(({ data }) => {
         this.setState({ questions: data.results });
       })
@@ -54,6 +55,7 @@ class App extends Component {
           <NumberSelect handleSetNumber={this.setNumber} />
           <CategorySelect handleSetCategory={this.setCategory} />
           <DifficultySelect handleSetDifficulty={this.setDifficulty} />
+          <StartGameButton handleStartGame={this.startGame} />
         </main>
       </div>
     );
