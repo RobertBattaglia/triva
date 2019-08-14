@@ -3,12 +3,14 @@ import "./App.css";
 
 import axios from "axios";
 import CategorySelect from "./components/CategorySelect";
+import DifficultySelect from "./components/DifficultySelect";
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { category: null, questions: [] };
+    this.state = { category: 9, difficulty: "easy", questions: [] };
     this.setCategory = this.setCategory.bind(this);
+    this.setDifficulty = this.setDifficulty.bind(this);
   }
 
   componentDidMount() {
@@ -17,6 +19,10 @@ class App extends Component {
 
   setCategory(value) {
     this.setState({ category: value });
+  }
+
+  setDifficulty(value) {
+    this.setState({ difficulty: value });
   }
 
   startGame(qNum, category, difficulty) {
@@ -40,6 +46,7 @@ class App extends Component {
         <main>
           <h1>Trivia</h1>
           <CategorySelect handleSetCategory={this.setCategory} />
+          <DifficultySelect handleSetDifficulty={this.setDifficulty} />
         </main>
       </div>
     );
