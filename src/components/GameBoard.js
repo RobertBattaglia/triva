@@ -2,27 +2,30 @@ import React, { Component } from "react";
 
 export default class GameBoard extends Component {
   render() {
-    const { question } = this.props;
+    const { question, correct_answer, incorrect_answers } = this.props.question;
 
-    const checkQuestion = value => {
+    const handleClick = value => {
       this.props.handleCheckQuestion(value);
+    };
+
+    const renderRandomOrder = () => {
+      const correctAnswerIndex = Math.floor(Math.random() * 4);
+      let allAnswers = incorrect_answers.slice();
+      allAnswers.splice(correctAnswerIndex, 0, correct_answer);
+
+      return allAnswers.map(answer => {
+        return (
+          <button key={answer} onClick={() => handleClick(answer)}>
+            {answer}
+          </button>
+        );
+      });
     };
 
     return (
       <div>
-        <h3>{question.question}</h3>
-        <button onClick={() => checkQuestion(question.correct_answer)}>
-          {question.correct_answer}
-        </button>
-        <button onClick={() => checkQuestion(question.incorrect_answers[0])}>
-          {question.incorrect_answers[0]}
-        </button>
-        <button onClick={() => checkQuestion(question.incorrect_answers[1])}>
-          {question.incorrect_answers[1]}
-        </button>
-        <button onClick={() => checkQuestion(question.incorrect_answers[2])}>
-          {question.incorrect_answers[2]}
-        </button>
+        <h3>{question}</h3>
+        {renderRandomOrder()}
       </div>
     );
   }
