@@ -7,6 +7,7 @@ import DifficultySelect from "./components/DifficultySelect";
 import NumberSelect from "./components/NumberSelect";
 import StartGameButton from "./components/StartGameButton";
 import QuitGameButton from "./components/QuitGameButton";
+import GameBoard from "./components/GameBoard";
 
 const initState = {
   gameInProgress: false,
@@ -67,7 +68,10 @@ class App extends Component {
           <StartGameButton handleStartGame={this.startGame} />
         </React.Fragment>
       ) : (
-        <QuitGameButton handleQuitGame={this.quitGame} />
+        <React.Fragment>
+          <QuitGameButton handleQuitGame={this.quitGame} />
+          <GameBoard question={this.state.questions[0]} />
+        </React.Fragment>
       );
     };
 
