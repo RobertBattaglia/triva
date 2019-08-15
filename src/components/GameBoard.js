@@ -1,7 +1,27 @@
 import React, { Component } from "react";
-import { Button } from "../styles";
+import styled from "styled-components";
 
+import { Button } from "../styles";
 import Scoreboard from "./Scoreboard";
+
+const H3 = styled.h3`
+  font-size: 3rem;
+`;
+
+const Questions = styled.div`
+  margin-top: 3rem;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+`;
+
+const Answer = styled(Button)`
+  width: 49%;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  margin-bottom: 3rem;
+`;
+
 export default class GameBoard extends Component {
   render() {
     const { score } = this.props;
@@ -18,7 +38,7 @@ export default class GameBoard extends Component {
 
       return allAnswers.map(answer => {
         return (
-          <Button
+          <Answer
             key={answer}
             onClick={() => handleClick(answer)}
             dangerouslySetInnerHTML={{ __html: answer }}
@@ -30,8 +50,8 @@ export default class GameBoard extends Component {
     return (
       <React.Fragment>
         <Scoreboard score={score} />
-        <h3 dangerouslySetInnerHTML={{ __html: question }} />
-        {renderRandomOrder()}
+        <H3 dangerouslySetInnerHTML={{ __html: question }} />
+        <Questions>{renderRandomOrder()}</Questions>
       </React.Fragment>
     );
   }

@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const Head = styled.header`
-  margin-top: 2.5vh;
+  margin: 3rem auto;
   font-size: 2rem;
   text-align: center;
   font-family: Arial, Helvetica, sans-serif;
