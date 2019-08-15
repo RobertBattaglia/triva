@@ -1,9 +1,9 @@
 import React from "react";
 
-export default function ResultBoard(props) {
+export default function Scoreboard(props) {
   return (
     <React.Fragment>
-      <p>final score {props.score}</p>
+      <p>Score {props.score}</p>
     </React.Fragment>
   );
 }

@@ -8,7 +8,7 @@ import NumberSelect from "./components/NumberSelect";
 import StartGameButton from "./components/StartGameButton";
 import QuitGameButton from "./components/QuitGameButton";
 import GameBoard from "./components/GameBoard";
-import ResultBoard from "./components/ResultBoard";
+import Scoreboard from "./components/Scoreboard";
 
 const initState = {
   gameInProgress: false,
@@ -62,10 +62,23 @@ class App extends Component {
   }
 
   checkQuestion(val) {
-    if (val === this.state.questions[0].correct_answer) {
-      console.log("correct");
+    let multiplier;
+    if (this.state.difficulty === "easy") {
+      multiplier = 1;
+    } else if (this.state.difficulty === "medium") {
+      multiplier = 3;
     } else {
-      console.log("incorrect");
+      multiplier = 5;
+    }
+
+    if (val === this.state.questions[0].correct_answer) {
+      let score = this.state.score;
+      score += multiplier;
+      this.setState({ score });
+    } else {
+      let score = this.state.score;
+      score -= multiplier;
+      this.setState({ score });
     }
     const questions = this.state.questions.slice();
     questions.shift();
@@ -95,6 +108,7 @@ class App extends Component {
         <React.Fragment>
           <QuitGameButton word={"Quit Game"} handleQuitGame={quitGame} />
           <GameBoard
+            score={score}
             question={questions[0]}
             handleCheckQuestion={checkQuestion}
           />
@@ -102,7 +116,7 @@ class App extends Component {
       ) : (
         <React.Fragment>
           <QuitGameButton word={"Play Again"} handleQuitGame={quitGame} />
-          <ResultBoard score={score} />
+          <Scoreboard score={score} />
         </React.Fragment>
       );
     };

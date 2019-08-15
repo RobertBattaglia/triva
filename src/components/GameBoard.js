@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 
+import Scoreboard from "./Scoreboard";
 export default class GameBoard extends Component {
   render() {
+    const { score } = this.props;
     const { question, correct_answer, incorrect_answers } = this.props.question;
 
     const handleClick = value => {
@@ -23,10 +25,11 @@ export default class GameBoard extends Component {
     };
 
     return (
-      <div>
+      <React.Fragment>
+        <Scoreboard score={score} />
         <h3>{question}</h3>
         {renderRandomOrder()}
-      </div>
+      </React.Fragment>
     );
   }
 }
