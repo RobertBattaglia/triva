@@ -7,13 +7,16 @@ import DifficultySelect from "./components/DifficultySelect";
 import NumberSelect from "./components/NumberSelect";
 import StartGameButton from "./components/StartGameButton";
 import QuitGameButton from "./components/QuitGameButton";
+import GameBoard from "./components/GameBoard";
+import Scoreboard from "./components/Scoreboard";
 
 const initState = {
   gameInProgress: false,
   number: 5,
   category: 9,
   difficulty: "easy",
-  questions: []
+  questions: [],
+  score: 0
 };
 
 class App extends Component {
@@ -25,6 +28,7 @@ class App extends Component {
     this.setNumber = this.setNumber.bind(this);
     this.startGame = this.startGame.bind(this);
     this.quitGame = this.quitGame.bind(this);
+    this.checkQuestion = this.checkQuestion.bind(this);
   }
 
   setNumber(value) {
@@ -57,17 +61,63 @@ class App extends Component {
     this.setState(initState);
   }
 
+  checkQuestion(val) {
+    let multiplier;
+    if (this.state.difficulty === "easy") {
+      multiplier = 1;
+    } else if (this.state.difficulty === "medium") {
+      multiplier = 3;
+    } else {
+      multiplier = 5;
+    }
+
+    if (val === this.state.questions[0].correct_answer) {
+      let score = this.state.score;
+      score += multiplier;
+      this.setState({ score });
+    } else {
+      let score = this.state.score;
+      score -= multiplier;
+      this.setState({ score });
+    }
+    const questions = this.state.questions.slice();
+    questions.shift();
+    this.setState({ questions });
+  }
+
   render() {
+    const {
+      setNumber,
+      setCategory,
+      setDifficulty,
+      startGame,
+      quitGame,
+      checkQuestion
+    } = this;
+    const { gameInProgress, questions, score } = this.state;
+
     const renderGameInProgress = () => {
-      return !this.state.gameInProgress ? (
+      return !gameInProgress ? (
         <React.Fragment>
-          <NumberSelect handleSetNumber={this.setNumber} />
-          <CategorySelect handleSetCategory={this.setCategory} />
-          <DifficultySelect handleSetDifficulty={this.setDifficulty} />
-          <StartGameButton handleStartGame={this.startGame} />
+          <NumberSelect handleSetNumber={setNumber} />
+          <CategorySelect handleSetCategory={setCategory} />
+          <DifficultySelect handleSetDifficulty={setDifficulty} />
+          <StartGameButton handleStartGame={startGame} />
+        </React.Fragment>
+      ) : questions.length ? (
+        <React.Fragment>
+          <QuitGameButton word={"Quit Game"} handleQuitGame={quitGame} />
+          <GameBoard
+            score={score}
+            question={questions[0]}
+            handleCheckQuestion={checkQuestion}
+          />
         </React.Fragment>
       ) : (
-        <QuitGameButton handleQuitGame={this.quitGame} />
+        <React.Fragment>
+          <QuitGameButton word={"Play Again"} handleQuitGame={quitGame} />
+          <Scoreboard score={score} />
+        </React.Fragment>
       );
     };
 
