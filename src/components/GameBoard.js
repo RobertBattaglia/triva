@@ -37,7 +37,7 @@ const Answer = styled(Button)`
 
 export default class GameBoard extends Component {
   render() {
-    const { score } = this.props;
+    const { currentQuestion, number, score } = this.props;
     const { question, correct_answer, incorrect_answers } = this.props.question;
 
     const handleClick = value => {
@@ -63,8 +63,16 @@ export default class GameBoard extends Component {
 
     return (
       <React.Fragment>
-        <Scoreboard score={score} />
-        <H3 dangerouslySetInnerHTML={{ __html: question }} />
+        <Scoreboard
+          currentQuestion={currentQuestion}
+          number={number}
+          score={score}
+        />
+        <H3
+          dangerouslySetInnerHTML={{
+            __html: currentQuestion + ") " + question
+          }}
+        />
         <Questions>{renderRandomOrder()}</Questions>
       </React.Fragment>
     );

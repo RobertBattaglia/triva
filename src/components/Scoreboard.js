@@ -7,5 +7,5 @@ const Paragraph = styled.p`
 `;
 
 export default function Scoreboard(props) {
-  return <Paragraph>Score: {props.score}</Paragraph>;
+  return <Paragraph>Score: {props.score + "/" + props.number}</Paragraph>;
 }

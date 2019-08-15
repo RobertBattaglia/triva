@@ -23,6 +23,7 @@ const GameInProgress = styled.div`
 
 const initState = {
   gameInProgress: false,
+  currentQuestion: 1,
   number: 5,
   category: 9,
   difficulty: "easy",
@@ -79,22 +80,9 @@ class App extends Component {
   }
 
   checkQuestion(val) {
-    let multiplier;
-    if (this.state.difficulty === "easy") {
-      multiplier = 1;
-    } else if (this.state.difficulty === "medium") {
-      multiplier = 3;
-    } else {
-      multiplier = 5;
-    }
-
+    this.setState({ currentQuestion: this.state.currentQuestion + 1 });
     if (val === this.state.questions[0].correct_answer) {
-      let score = this.state.score;
-      score += multiplier;
-      this.setState({ score });
-    } else {
-      let score = this.state.score;
-      score -= multiplier;
+      let score = this.state.score + 1;
       this.setState({ score });
     }
     const questions = this.state.questions.slice();
@@ -112,7 +100,14 @@ class App extends Component {
       quitGame,
       checkQuestion
     } = this;
-    const { gameInProgress, questions, score, darkMode } = this.state;
+    const {
+      gameInProgress,
+      currentQuestion,
+      number,
+      questions,
+      score,
+      darkMode
+    } = this.state;
 
     const renderGameInProgress = () => {
       return !gameInProgress ? (
@@ -129,6 +124,8 @@ class App extends Component {
         <GameInProgress>
           <GameBoard
             darkMode={darkMode}
+            currentQuestion={currentQuestion}
+            number={number}
             score={score}
             question={questions[0]}
             handleCheckQuestion={checkQuestion}
@@ -141,7 +138,7 @@ class App extends Component {
         </GameInProgress>
       ) : (
         <GameInProgress>
-          <Scoreboard score={score} />
+          <Scoreboard number={number} score={score} />
           <QuitGameButton
             darkMode={darkMode}
             word={"Play Again"}
