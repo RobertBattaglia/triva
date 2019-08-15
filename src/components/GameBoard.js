@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Button } from "../styles";
 
 import Scoreboard from "./Scoreboard";
 export default class GameBoard extends Component {
@@ -17,7 +18,7 @@ export default class GameBoard extends Component {
 
       return allAnswers.map(answer => {
         return (
-          <button
+          <Button
             key={answer}
             onClick={() => handleClick(answer)}
             dangerouslySetInnerHTML={{ __html: answer }}

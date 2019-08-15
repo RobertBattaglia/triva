@@ -1,5 +1,6 @@
 import React from "react";
+import { Button } from "../styles";
 
 export default function QuitGameButton(props) {
-  return <button onClick={props.handleQuitGame}>{props.word}</button>;
+  return <Button onClick={props.handleQuitGame}>{props.word}</Button>;
 }

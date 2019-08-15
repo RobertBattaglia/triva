@@ -2,7 +2,8 @@ import React, { Component } from "react";
 
 import axios from "axios";
 
-import GlobalStyle from "./styles";
+import { GlobalStyle } from "./styles";
+import Header from "./components/Header";
 import CategorySelect from "./components/CategorySelect";
 import DifficultySelect from "./components/DifficultySelect";
 import NumberSelect from "./components/NumberSelect";
@@ -125,7 +126,7 @@ class App extends Component {
     return (
       <div>
         <GlobalStyle />
-        <h1>Trivia</h1>
+        <Header />
         {renderGameInProgress()}
       </div>
     );
