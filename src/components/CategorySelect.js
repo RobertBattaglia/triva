@@ -6,7 +6,7 @@ export default function CategorySelect(props) {
     props.handleSetCategory(event.target.value);
   }
   return (
-    <Select onChange={setCategory}>
+    <Select darkMode={props.darkMode} onChange={setCategory}>
       <option value="9">General Knowledge</option>
       <option value="10">Entertainment: Books</option>
       <option value="11">Entertainment: Film</option>

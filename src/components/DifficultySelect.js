@@ -7,7 +7,7 @@ export default function DifficultySelect(props) {
   }
 
   return (
-    <Select onChange={setDifficultly}>
+    <Select darkMode={props.darkMode} onChange={setDifficultly}>
       <option value="easy">Easy</option>
       <option value="medium">Medium</option>
       <option value="hard">Hard</option>

@@ -12,7 +12,11 @@ html {
   font-size: 62.5%
 }
 body {
-  background: linear-gradient(to bottom right, #F0810F, #E6DF44);
+  background: ${props =>
+    props.darkMode
+      ? "linear-gradient(to bottom right, #011A27, #063852)"
+      : "linear-gradient(to bottom right, #F0810F, #E6DF44)"}; 
+  color: ${props => (props.darkMode ? "white" : "black")};
   height: 100vh;
   padding: 0 5vw;
 }
@@ -22,14 +26,26 @@ export const Button = styled.div`
   display: inline-block;
   font-size: 2rem;
   padding: 1rem;
-  background: linear-gradient(to bottom right, #e6df44, #f0810f);
-  border: solid black 3px;
+  background: ${props =>
+    props.darkMode
+      ? "linear-gradient(to bottom right, #063852, #011A27)"
+      : "linear-gradient(to bottom right, #E6DF44, #F0810F)"};
+  border: solid ${props => (props.darkMode ? "white" : "black")} 3px;
   border-radius: 1.5rem;
-  box-shadow: 0.25rem 0.5rem 1rem rgba(0, 0, 0, 0.8);
+  box-shadow: ${props =>
+    props.darkMode
+      ? "0.25rem 0.5rem 1rem rgba(255, 255, 255, 0.8)"
+      : "0.25rem 0.5rem 1rem rgba(0, 0, 0, 0.8)"};
   &:hover {
     transform: translateY(-5%);
-    box-shadow: 0.5rem 1rem 1rem rgba(0, 0, 0, 0.6);
-    background: linear-gradient(to bottom left, #e6df44, #f0810f);
+    box-shadow: ${props =>
+      props.darkMode
+        ? "0.5rem 1rem 2rem rgba(255, 255, 255, 0.6)"
+        : "0.5rem 1rem 2rem rgba(0, 0, 0, 0.6)"};
+    background: ${props =>
+      props.darkMode
+        ? "linear-gradient(to bottom right, #011A27, #063852)"
+        : "linear-gradient(to bottom right, #F0810F, #E6DF44)"};
     cursor: pointer;
   }
   &:active {
@@ -47,7 +63,7 @@ export const Select = styled.select`
   line-height: 1.3;
   padding: 0.6em 1.4em 0.5em 0.8em;
   width: 50%;
-  border: 3px solid black;
+  border: 3px solid ${props => (props.darkMode ? "silver" : "black")};
   box-shadow: 0 1px 0 1px rgba(0, 0, 0, 0.04);
   border-radius: 0.5em;
   -moz-appearance: none;

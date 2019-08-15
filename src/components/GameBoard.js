@@ -16,6 +16,7 @@ const Questions = styled.div`
 `;
 
 const Answer = styled(Button)`
+  font-size: 2.5rem;
   width: 49%;
   padding-top: 3rem;
   padding-bottom: 3rem;
@@ -40,6 +41,7 @@ export default class GameBoard extends Component {
         return (
           <Answer
             key={answer}
+            darkMode={this.props.darkMode}
             onClick={() => handleClick(answer)}
             dangerouslySetInnerHTML={{ __html: answer }}
           />
