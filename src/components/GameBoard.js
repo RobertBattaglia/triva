@@ -13,14 +13,26 @@ const Questions = styled.div`
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+  margin-left: 10%;
+  margin-right: 10%;
+  width: 80%;
 `;
 
 const Answer = styled(Button)`
+  color: #444;
   font-size: 2.5rem;
+  font-family: sans-serif;
+  font-weight: 700;
   width: 49%;
+  background: #fff;
   padding-top: 3rem;
-  padding-bottom: 3rem;
-  margin-bottom: 3rem;
+  padding-bottom: 2.5rem;
+  margin-bottom: 2.5rem;
+  border: solid ${props => (props.darkMode ? "#DDDDDD" : "#111111")} 3px;
+  &:hover {
+    background: #dddddd;
+    border: solid ${props => (props.darkMode ? "#fff" : "#111111")} 3px;
+  }
 `;
 
 export default class GameBoard extends Component {
