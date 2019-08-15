@@ -17,9 +17,11 @@ export default class GameBoard extends Component {
 
       return allAnswers.map(answer => {
         return (
-          <button key={answer} onClick={() => handleClick(answer)}>
-            {answer}
-          </button>
+          <button
+            key={answer}
+            onClick={() => handleClick(answer)}
+            dangerouslySetInnerHTML={{ __html: answer }}
+          />
         );
       });
     };
@@ -27,7 +29,7 @@ export default class GameBoard extends Component {
     return (
       <React.Fragment>
         <Scoreboard score={score} />
-        <h3>{question}</h3>
+        <h3 dangerouslySetInnerHTML={{ __html: question }} />
         {renderRandomOrder()}
       </React.Fragment>
     );
