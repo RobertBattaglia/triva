@@ -1,7 +1,10 @@
 import React, { Component } from "react";
-import "./App.css";
 
 import axios from "axios";
+import styled from "styled-components";
+
+import { GlobalStyle } from "./styles";
+import Header from "./components/Header";
 import CategorySelect from "./components/CategorySelect";
 import DifficultySelect from "./components/DifficultySelect";
 import NumberSelect from "./components/NumberSelect";
@@ -10,8 +13,17 @@ import QuitGameButton from "./components/QuitGameButton";
 import GameBoard from "./components/GameBoard";
 import Scoreboard from "./components/Scoreboard";
 
+const GameNotInProgress = styled.div`
+  text-align: center;
+`;
+
+const GameInProgress = styled.div`
+  text-align: center;
+`;
+
 const initState = {
   gameInProgress: false,
+  currentQuestion: 1,
   number: 5,
   category: 9,
   difficulty: "easy",
@@ -22,10 +34,11 @@ const initState = {
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = initState;
+    this.state = { ...initState, darkMode: false };
     this.setCategory = this.setCategory.bind(this);
     this.setDifficulty = this.setDifficulty.bind(this);
     this.setNumber = this.setNumber.bind(this);
+    this.setDarkMode = this.setDarkMode.bind(this);
     this.startGame = this.startGame.bind(this);
     this.quitGame = this.quitGame.bind(this);
     this.checkQuestion = this.checkQuestion.bind(this);
@@ -43,6 +56,10 @@ class App extends Component {
     this.setState({ difficulty: value });
   }
 
+  setDarkMode() {
+    this.setState({ darkMode: !this.state.darkMode });
+  }
+
   startGame() {
     const { number, category, difficulty } = this.state;
     axios
@@ -58,26 +75,14 @@ class App extends Component {
   }
 
   quitGame() {
-    this.setState(initState);
+    const darkMode = this.state.darkMode;
+    this.setState({ ...initState, darkMode });
   }
 
   checkQuestion(val) {
-    let multiplier;
-    if (this.state.difficulty === "easy") {
-      multiplier = 1;
-    } else if (this.state.difficulty === "medium") {
-      multiplier = 3;
-    } else {
-      multiplier = 5;
-    }
-
+    this.setState({ currentQuestion: this.state.currentQuestion + 1 });
     if (val === this.state.questions[0].correct_answer) {
-      let score = this.state.score;
-      score += multiplier;
-      this.setState({ score });
-    } else {
-      let score = this.state.score;
-      score -= multiplier;
+      let score = this.state.score + 1;
       this.setState({ score });
     }
     const questions = this.state.questions.slice();
@@ -90,45 +95,65 @@ class App extends Component {
       setNumber,
       setCategory,
       setDifficulty,
+      setDarkMode,
       startGame,
       quitGame,
       checkQuestion
     } = this;
-    const { gameInProgress, questions, score } = this.state;
+    const {
+      gameInProgress,
+      currentQuestion,
+      number,
+      questions,
+      score,
+      darkMode
+    } = this.state;
 
     const renderGameInProgress = () => {
       return !gameInProgress ? (
-        <React.Fragment>
-          <NumberSelect handleSetNumber={setNumber} />
-          <CategorySelect handleSetCategory={setCategory} />
-          <DifficultySelect handleSetDifficulty={setDifficulty} />
-          <StartGameButton handleStartGame={startGame} />
-        </React.Fragment>
+        <GameNotInProgress>
+          <NumberSelect darkMode={darkMode} handleSetNumber={setNumber} />
+          <CategorySelect darkMode={darkMode} handleSetCategory={setCategory} />
+          <DifficultySelect
+            darkMode={darkMode}
+            handleSetDifficulty={setDifficulty}
+          />
+          <StartGameButton darkMode={darkMode} handleStartGame={startGame} />
+        </GameNotInProgress>
       ) : questions.length ? (
-        <React.Fragment>
-          <QuitGameButton word={"Quit Game"} handleQuitGame={quitGame} />
+        <GameInProgress>
           <GameBoard
+            darkMode={darkMode}
+            currentQuestion={currentQuestion}
+            number={number}
             score={score}
             question={questions[0]}
             handleCheckQuestion={checkQuestion}
           />
-        </React.Fragment>
+          <QuitGameButton
+            darkMode={darkMode}
+            word={"Quit Game"}
+            handleQuitGame={quitGame}
+          />
+        </GameInProgress>
       ) : (
-        <React.Fragment>
-          <QuitGameButton word={"Play Again"} handleQuitGame={quitGame} />
-          <Scoreboard score={score} />
-        </React.Fragment>
+        <GameInProgress>
+          <Scoreboard number={number} score={score} />
+          <QuitGameButton
+            darkMode={darkMode}
+            word={"Play Again"}
+            handleQuitGame={quitGame}
+          />
+        </GameInProgress>
       );
     };
 
     return (
-      <div className="App">
-        <header className="App-header" />
-        <main>
-          <h1>Trivia</h1>
-          {renderGameInProgress()}
-        </main>
-      </div>
+      <React.Fragment>
+        <GlobalStyle darkMode={darkMode} />
+        <Header handleSetDarkMode={setDarkMode} />
+        {renderGameInProgress()}
+      </React.Fragment>
     );
   }
 }

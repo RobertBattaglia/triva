@@ -1,5 +1,10 @@
 import React from "react";
+import { Button } from "../styles";
 
 export default function StartGameButton(props) {
-  return <button onClick={props.handleStartGame}>Start Game!</button>;
+  return (
+    <Button darkMode={props.darkMode} onClick={props.handleStartGame}>
+      Start Game!
+    </Button>
+  );
 }
