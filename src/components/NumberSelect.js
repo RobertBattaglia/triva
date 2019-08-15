@@ -1,4 +1,5 @@
 import React from "react";
+import { Select } from "../styles";
 
 export default function NumberSelect(props) {
   function setNumber(event) {
@@ -6,10 +7,10 @@ export default function NumberSelect(props) {
   }
 
   return (
-    <select onChange={setNumber}>
+    <Select onChange={setNumber}>
       <option value="5">5</option>
       <option value="10">10</option>
       <option value="20">20</option>
-    </select>
+    </Select>
   );
 }

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 import axios from "axios";
+import styled from "styled-components";
 
 import { GlobalStyle } from "./styles";
 import Header from "./components/Header";
@@ -11,6 +12,14 @@ import StartGameButton from "./components/StartGameButton";
 import QuitGameButton from "./components/QuitGameButton";
 import GameBoard from "./components/GameBoard";
 import Scoreboard from "./components/Scoreboard";
+
+const GameNotInProgress = styled.div`
+  text-align: center;
+`;
+
+const GameInProgress = styled.div`
+  text-align: center;
+`;
 
 const initState = {
   gameInProgress: false,
@@ -100,26 +109,26 @@ class App extends Component {
 
     const renderGameInProgress = () => {
       return !gameInProgress ? (
-        <React.Fragment>
+        <GameNotInProgress>
           <NumberSelect handleSetNumber={setNumber} />
           <CategorySelect handleSetCategory={setCategory} />
           <DifficultySelect handleSetDifficulty={setDifficulty} />
           <StartGameButton handleStartGame={startGame} />
-        </React.Fragment>
+        </GameNotInProgress>
       ) : questions.length ? (
-        <React.Fragment>
-          <QuitGameButton word={"Quit Game"} handleQuitGame={quitGame} />
+        <GameInProgress>
           <GameBoard
             score={score}
             question={questions[0]}
             handleCheckQuestion={checkQuestion}
           />
-        </React.Fragment>
+          <QuitGameButton word={"Quit Game"} handleQuitGame={quitGame} />
+        </GameInProgress>
       ) : (
-        <React.Fragment>
-          <QuitGameButton word={"Play Again"} handleQuitGame={quitGame} />
+        <GameInProgress>
           <Scoreboard score={score} />
-        </React.Fragment>
+          <QuitGameButton word={"Play Again"} handleQuitGame={quitGame} />
+        </GameInProgress>
       );
     };
 

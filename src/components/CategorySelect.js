@@ -1,11 +1,12 @@
 import React from "react";
+import { Select } from "../styles";
 
 export default function CategorySelect(props) {
   function setCategory(event) {
     props.handleSetCategory(event.target.value);
   }
   return (
-    <select onChange={setCategory}>
+    <Select onChange={setCategory}>
       <option value="9">General Knowledge</option>
       <option value="10">Entertainment: Books</option>
       <option value="11">Entertainment: Film</option>
@@ -26,6 +27,6 @@ export default function CategorySelect(props) {
       <option value="26">Celebrities</option>
       <option value="27">Animals</option>
       <option value="28">Vehicles</option>
-    </select>
+    </Select>
   );
 }
