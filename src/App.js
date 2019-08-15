@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import styled from "styled-components";
 
-import { GlobalStyle } from "./styles";
+import { GlobalStyle, Button } from "./styles";
 import Header from "./components/Header";
 import CategorySelect from "./components/CategorySelect";
 import DifficultySelect from "./components/DifficultySelect";
@@ -24,6 +24,7 @@ const GameInProgress = styled.div`
 const initState = {
   gameInProgress: false,
   currentQuestion: 1,
+  questionAnswered: false,
   number: 5,
   category: 9,
   difficulty: "easy",
@@ -42,6 +43,7 @@ class App extends Component {
     this.startGame = this.startGame.bind(this);
     this.quitGame = this.quitGame.bind(this);
     this.checkQuestion = this.checkQuestion.bind(this);
+    this.goToNextQuestion = this.goToNextQuestion.bind(this);
   }
 
   setNumber(value) {
@@ -80,14 +82,18 @@ class App extends Component {
   }
 
   checkQuestion(val) {
-    this.setState({ currentQuestion: this.state.currentQuestion + 1 });
+    let score = this.state.score;
     if (val === this.state.questions[0].correct_answer) {
-      let score = this.state.score + 1;
-      this.setState({ score });
+      score++;
     }
+    this.setState({ score, questionAnswered: true });
+  }
+
+  goToNextQuestion() {
+    this.setState({ currentQuestion: this.state.currentQuestion + 1 });
     const questions = this.state.questions.slice();
     questions.shift();
-    this.setState({ questions });
+    this.setState({ questions, questionAnswered: false });
   }
 
   render() {
@@ -98,11 +104,13 @@ class App extends Component {
       setDarkMode,
       startGame,
       quitGame,
-      checkQuestion
+      checkQuestion,
+      goToNextQuestion
     } = this;
     const {
       gameInProgress,
       currentQuestion,
+      questionAnswered,
       number,
       questions,
       score,
@@ -130,11 +138,17 @@ class App extends Component {
             question={questions[0]}
             handleCheckQuestion={checkQuestion}
           />
-          <QuitGameButton
-            darkMode={darkMode}
-            word={"Quit Game"}
-            handleQuitGame={quitGame}
-          />
+          {questionAnswered ? (
+            <Button darkMode={darkMode} onClick={goToNextQuestion}>
+              Next Question
+            </Button>
+          ) : (
+            <QuitGameButton
+              darkMode={darkMode}
+              word={"Quit Game"}
+              handleQuitGame={quitGame}
+            />
+          )}
         </GameInProgress>
       ) : (
         <GameInProgress>
