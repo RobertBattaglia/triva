@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import "./App.css";
 
 import axios from "axios";
+
+import GlobalStyle from "./styles";
 import CategorySelect from "./components/CategorySelect";
 import DifficultySelect from "./components/DifficultySelect";
 import NumberSelect from "./components/NumberSelect";
@@ -122,12 +123,10 @@ class App extends Component {
     };
 
     return (
-      <div className="App">
-        <header className="App-header" />
-        <main>
-          <h1>Trivia</h1>
-          {renderGameInProgress()}
-        </main>
+      <div>
+        <GlobalStyle />
+        <h1>Trivia</h1>
+        {renderGameInProgress()}
       </div>
     );
   }
