@@ -24,13 +24,19 @@ const Answer = styled(Button)`
   font-family: sans-serif;
   font-weight: 700;
   width: 49%;
-  background: #fff;
+  background: ${props =>
+    props.questionAnswered && props.index === props.correctAnswerIndex
+      ? "#2ECC40"
+      : "#fff"};
   padding-top: 3rem;
   padding-bottom: 2.5rem;
   margin-bottom: 2.5rem;
   border: solid ${props => (props.darkMode ? "#DDDDDD" : "#111111")} 3px;
   &:hover {
-    background: #dddddd;
+    background: ${props =>
+      props.questionAnswered && props.index === props.correctAnswerIndex
+        ? "#2ECC40"
+        : "#dddddd"};
     border: solid ${props => (props.darkMode ? "#fff" : "#111111")} 3px;
   }
 `;
@@ -41,6 +47,7 @@ export default class GameBoard extends Component {
       number,
       score,
       currentQuestionIndex,
+      correctAnswerIndex,
       questionAnswered
     } = this.props;
     const { question, answers } = this.props.currentQuestion;
@@ -68,6 +75,9 @@ export default class GameBoard extends Component {
             <Answer
               key={answer}
               darkMode={this.props.darkMode}
+              index={index}
+              correctAnswerIndex={correctAnswerIndex}
+              questionAnswered={questionAnswered}
               onClick={() => handleClick(index)}
               dangerouslySetInnerHTML={{ __html: answer }}
             />

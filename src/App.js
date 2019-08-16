@@ -140,6 +140,7 @@ class App extends Component {
       score,
       currentQuestion,
       currentQuestionIndex,
+      correctAnswerIndex,
       questionAnswered
     } = this.state;
 
@@ -163,6 +164,7 @@ class App extends Component {
             currentQuestion={currentQuestion}
             currentQuestionIndex={currentQuestionIndex}
             handleCheckQuestion={checkQuestion}
+            correctAnswerIndex={correctAnswerIndex}
             questionAnswered={questionAnswered}
           />
           {questionAnswered ? (
