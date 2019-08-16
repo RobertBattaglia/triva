@@ -110,7 +110,10 @@ class App extends Component {
       });
     } else {
       // game over
-      localStorage.setItem(new Date().toLocaleString(), `${this.state.score} / ${this.state.number}`)
+      let { number, difficulty, score } = this.state;
+      difficulty = difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
+      const val = `${difficulty} - ${score} / ${number}`;
+      localStorage.setItem(new Date().getTime(), val);
     }
     this.setState({
       currentQuestionIndex: this.state.currentQuestionIndex + 1
@@ -174,9 +177,9 @@ class App extends Component {
           />
           {questionAnswered ? (
             currentQuestionIndex === number ? (
-            <Button darkMode={darkMode} onClick={goToNextQuestion}>
-              Game Over
-            </Button>
+              <Button darkMode={darkMode} onClick={goToNextQuestion}>
+                Game Over
+              </Button>
             ) : (
               <Button darkMode={darkMode} onClick={goToNextQuestion}>
                 Next Question
@@ -192,7 +195,11 @@ class App extends Component {
         </GameInProgress>
       ) : (
         <GameInProgress>
-          <Scoreboard number={number} score={score} />
+          <Scoreboard
+            number={number}
+            score={score}
+            currentQuestionIndex={currentQuestionIndex}
+          />
           <QuitGameButton
             darkMode={darkMode}
             word={"Play Again"}
