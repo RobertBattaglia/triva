@@ -170,9 +170,15 @@ class App extends Component {
             handleCheckQuestion={checkQuestion}
           />
           {questionAnswered ? (
+            currentQuestionIndex === number ? (
             <Button darkMode={darkMode} onClick={goToNextQuestion}>
-              Next Question
+              Game Over
             </Button>
+            ) : (
+              <Button darkMode={darkMode} onClick={goToNextQuestion}>
+                Next Question
+              </Button>
+            )
           ) : (
             <QuitGameButton
               darkMode={darkMode}

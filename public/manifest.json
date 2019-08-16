@@ -1,5 +1,5 @@
 {
-  "short_name": "Triva App",
+  "short_name": "Trivia App",
   "name": "Application that uses Open Trivia DB api",
   "start_url": ".",
   "display": "standalone",
