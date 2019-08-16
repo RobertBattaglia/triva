@@ -24,56 +24,80 @@ const Answer = styled(Button)`
   font-family: sans-serif;
   font-weight: 700;
   width: 49%;
-  background: #fff;
+  background: ${props => {
+    if (props.questionAnswered && props.index === props.correctAnswerIndex) {
+      return "#2ECC40";
+    } else if (props.questionAnswered && props.index === props.answeredIndex) {
+      return "#FF4136";
+    } else {
+      return "#fff";
+    }
+  }};
   padding-top: 3rem;
   padding-bottom: 2.5rem;
   margin-bottom: 2.5rem;
   border: solid ${props => (props.darkMode ? "#DDDDDD" : "#111111")} 3px;
   &:hover {
-    background: #dddddd;
+    background: ${props => {
+      if (props.questionAnswered && props.index === props.correctAnswerIndex) {
+        return "#2ECC40";
+      } else if (
+        props.questionAnswered &&
+        props.index === props.answeredIndex
+      ) {
+        return "#FF4136";
+      } else {
+        return "#dddddd";
+      }
+    }};
     border: solid ${props => (props.darkMode ? "#fff" : "#111111")} 3px;
   }
 `;
 
 export default class GameBoard extends Component {
   render() {
-    const { currentQuestion, number, score } = this.props;
-    const { question, correct_answer, incorrect_answers } = this.props.question;
+    const {
+      number,
+      score,
+      currentQuestionIndex,
+      correctAnswerIndex,
+      questionAnswered,
+      answeredIndex
+    } = this.props;
+    const { question, answers } = this.props.currentQuestion;
 
-    const handleClick = value => {
-      this.props.handleCheckQuestion(value);
-    };
-
-    const renderRandomOrder = () => {
-      const correctAnswerIndex = Math.floor(Math.random() * 4);
-      let allAnswers = incorrect_answers.slice();
-      allAnswers.splice(correctAnswerIndex, 0, correct_answer);
-
-      return allAnswers.map(answer => {
-        return (
-          <Answer
-            key={answer}
-            darkMode={this.props.darkMode}
-            onClick={() => handleClick(answer)}
-            dangerouslySetInnerHTML={{ __html: answer }}
-          />
-        );
-      });
+    const handleClick = index => {
+      if (!questionAnswered) {
+        this.props.handleCheckQuestion(index);
+      }
     };
 
     return (
       <React.Fragment>
         <Scoreboard
-          currentQuestion={currentQuestion}
+          currentQuestionIndex={currentQuestionIndex}
           number={number}
           score={score}
         />
         <H3
           dangerouslySetInnerHTML={{
-            __html: currentQuestion + ") " + question
+            __html: currentQuestionIndex + ") " + question
           }}
         />
-        <Questions>{renderRandomOrder()}</Questions>
+        <Questions>
+          {answers.map((answer, index) => (
+            <Answer
+              key={answer}
+              darkMode={this.props.darkMode}
+              index={index}
+              correctAnswerIndex={correctAnswerIndex}
+              questionAnswered={questionAnswered}
+              answeredIndex={answeredIndex}
+              onClick={() => handleClick(index)}
+              dangerouslySetInnerHTML={{ __html: answer }}
+            />
+          ))}
+        </Questions>
       </React.Fragment>
     );
   }

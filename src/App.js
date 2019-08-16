@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import styled from "styled-components";
 
-import { GlobalStyle } from "./styles";
+import { GlobalStyle, Button } from "./styles";
 import Header from "./components/Header";
 import CategorySelect from "./components/CategorySelect";
 import DifficultySelect from "./components/DifficultySelect";
@@ -22,28 +22,42 @@ const GameInProgress = styled.div`
 `;
 
 const initState = {
-  gameInProgress: false,
-  currentQuestion: 1,
+  // Game Settings
   number: 5,
   category: 9,
   difficulty: "easy",
+  // Game State
+  gameInProgress: false,
+  score: 0,
   questions: [],
-  score: 0
+  // Question State
+  currentQuestion: null,
+  currentQuestionIndex: 0,
+  questionAnswered: false,
+  answeredIndex: null,
+  correctAnswerIndex: null
 };
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = { ...initState, darkMode: false };
+    this.setDarkMode = this.setDarkMode.bind(this);
+    this.setNumber = this.setNumber.bind(this);
     this.setCategory = this.setCategory.bind(this);
     this.setDifficulty = this.setDifficulty.bind(this);
-    this.setNumber = this.setNumber.bind(this);
-    this.setDarkMode = this.setDarkMode.bind(this);
     this.startGame = this.startGame.bind(this);
     this.quitGame = this.quitGame.bind(this);
+    this.goToNextQuestion = this.goToNextQuestion.bind(this);
     this.checkQuestion = this.checkQuestion.bind(this);
   }
 
+  // Global Settings
+  setDarkMode() {
+    this.setState({ darkMode: !this.state.darkMode });
+  }
+
+  // Game Settings
   setNumber(value) {
     this.setState({ number: value });
   }
@@ -56,10 +70,6 @@ class App extends Component {
     this.setState({ difficulty: value });
   }
 
-  setDarkMode() {
-    this.setState({ darkMode: !this.state.darkMode });
-  }
-
   startGame() {
     const { number, category, difficulty } = this.state;
     axios
@@ -67,7 +77,10 @@ class App extends Component {
         `https://opentdb.com/api.php?amount=${number}&category=${category}&difficulty=${difficulty}`
       )
       .then(({ data }) => {
-        this.setState({ questions: data.results, gameInProgress: true });
+        this.setState(
+          { questions: data.results, gameInProgress: true },
+          this.goToNextQuestion
+        );
       })
       .catch(err => {
         console.error(err);
@@ -79,34 +92,57 @@ class App extends Component {
     this.setState({ ...initState, darkMode });
   }
 
-  checkQuestion(val) {
-    this.setState({ currentQuestion: this.state.currentQuestion + 1 });
-    if (val === this.state.questions[0].correct_answer) {
-      let score = this.state.score + 1;
-      this.setState({ score });
-    }
+  // Game State
+  goToNextQuestion() {
     const questions = this.state.questions.slice();
-    questions.shift();
-    this.setState({ questions });
+    if (questions.length) {
+      const currentQuestion = questions.shift();
+      const multiple = currentQuestion.type === "multiple" ? 4 : 2;
+      const correctAnswerIndex = Math.floor(Math.random() * multiple);
+      let answers = currentQuestion.incorrect_answers.slice();
+      answers.splice(correctAnswerIndex, 0, currentQuestion.correct_answer);
+      currentQuestion.answers = answers;
+      this.setState({
+        questions,
+        currentQuestion,
+        questionAnswered: false,
+        correctAnswerIndex
+      });
+    }
+    this.setState({
+      currentQuestionIndex: this.state.currentQuestionIndex + 1
+    });
+  }
+
+  checkQuestion(index) {
+    let { score, correctAnswerIndex } = this.state;
+    if (index === correctAnswerIndex) {
+      score++;
+    }
+    this.setState({ score, questionAnswered: true, answeredIndex: index });
   }
 
   render() {
     const {
+      setDarkMode,
       setNumber,
       setCategory,
       setDifficulty,
-      setDarkMode,
       startGame,
       quitGame,
+      goToNextQuestion,
       checkQuestion
     } = this;
     const {
-      gameInProgress,
-      currentQuestion,
+      darkMode,
       number,
-      questions,
+      gameInProgress,
       score,
-      darkMode
+      currentQuestion,
+      currentQuestionIndex,
+      correctAnswerIndex,
+      questionAnswered,
+      answeredIndex
     } = this.state;
 
     const renderGameInProgress = () => {
@@ -120,21 +156,30 @@ class App extends Component {
           />
           <StartGameButton darkMode={darkMode} handleStartGame={startGame} />
         </GameNotInProgress>
-      ) : questions.length ? (
+      ) : currentQuestionIndex > 0 && currentQuestionIndex <= number ? (
         <GameInProgress>
           <GameBoard
             darkMode={darkMode}
-            currentQuestion={currentQuestion}
             number={number}
             score={score}
-            question={questions[0]}
+            currentQuestion={currentQuestion}
+            currentQuestionIndex={currentQuestionIndex}
+            correctAnswerIndex={correctAnswerIndex}
+            questionAnswered={questionAnswered}
+            answeredIndex={answeredIndex}
             handleCheckQuestion={checkQuestion}
           />
-          <QuitGameButton
-            darkMode={darkMode}
-            word={"Quit Game"}
-            handleQuitGame={quitGame}
-          />
+          {questionAnswered ? (
+            <Button darkMode={darkMode} onClick={goToNextQuestion}>
+              Next Question
+            </Button>
+          ) : (
+            <QuitGameButton
+              darkMode={darkMode}
+              word={"Quit Game"}
+              handleQuitGame={quitGame}
+            />
+          )}
         </GameInProgress>
       ) : (
         <GameInProgress>
