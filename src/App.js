@@ -112,7 +112,7 @@ class App extends Component {
       // game over
       let { number, difficulty, score } = this.state;
       difficulty = difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
-      const val = `${difficulty} - ${score} / ${number}`;
+      const val = `${score} / ${number} - ${difficulty}`;
       localStorage.setItem(new Date().getTime(), val);
     }
     this.setState({

@@ -25,9 +25,12 @@ export default function Scoreboard(props) {
         <React.Fragment>
           <RecentParagraph>Recent Scores:</RecentParagraph>
           <Scores>
-            {Object.values(localStorage).map(val => (
-              <li>{val}</li>
-            ))}
+            {Object.keys(localStorage)
+              .sort((x, y) => (parseInt(x) > parseInt(y) ? -1 : 1))
+              .slice(0, 5)
+              .map(key => (
+                <li key={key}>{localStorage.getItem(key)}</li>
+              ))}
           </Scores>
         </React.Fragment>
       ) : null}
