@@ -97,7 +97,8 @@ class App extends Component {
     const questions = this.state.questions.slice();
     if (questions.length) {
       const currentQuestion = questions.shift();
-      const correctAnswerIndex = Math.floor(Math.random() * 4);
+      const multiple = currentQuestion.type === "multiple" ? 4 : 2;
+      const correctAnswerIndex = Math.floor(Math.random() * multiple);
       let answers = currentQuestion.incorrect_answers.slice();
       answers.splice(correctAnswerIndex, 0, currentQuestion.correct_answer);
       currentQuestion.answers = answers;
