@@ -108,6 +108,9 @@ class App extends Component {
         questionAnswered: false,
         correctAnswerIndex
       });
+    } else {
+      // game over
+      localStorage.setItem(new Date().toLocaleString(), `${this.state.score} / ${this.state.number}`)
     }
     this.setState({
       currentQuestionIndex: this.state.currentQuestionIndex + 1
