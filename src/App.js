@@ -22,30 +22,42 @@ const GameInProgress = styled.div`
 `;
 
 const initState = {
-  gameInProgress: false,
-  currentQuestion: 1,
-  questionAnswered: false,
+  // Game Settings
   number: 5,
   category: 9,
   difficulty: "easy",
+  // Game State
+  gameInProgress: false,
+  score: 0,
   questions: [],
-  score: 0
+  // Question State
+  currentQuestion: null,
+  currentQuestionIndex: 0,
+  questionAnswered: false,
+  answeredIndex: null,
+  correctAnswerIndex: null
 };
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = { ...initState, darkMode: false };
+    this.setDarkMode = this.setDarkMode.bind(this);
+    this.setNumber = this.setNumber.bind(this);
     this.setCategory = this.setCategory.bind(this);
     this.setDifficulty = this.setDifficulty.bind(this);
-    this.setNumber = this.setNumber.bind(this);
-    this.setDarkMode = this.setDarkMode.bind(this);
     this.startGame = this.startGame.bind(this);
     this.quitGame = this.quitGame.bind(this);
-    this.checkQuestion = this.checkQuestion.bind(this);
     this.goToNextQuestion = this.goToNextQuestion.bind(this);
+    this.checkQuestion = this.checkQuestion.bind(this);
   }
 
+  // Global Settings
+  setDarkMode() {
+    this.setState({ darkMode: !this.state.darkMode });
+  }
+
+  // Game Settings
   setNumber(value) {
     this.setState({ number: value });
   }
@@ -58,10 +70,6 @@ class App extends Component {
     this.setState({ difficulty: value });
   }
 
-  setDarkMode() {
-    this.setState({ darkMode: !this.state.darkMode });
-  }
-
   startGame() {
     const { number, category, difficulty } = this.state;
     axios
@@ -69,7 +77,10 @@ class App extends Component {
         `https://opentdb.com/api.php?amount=${number}&category=${category}&difficulty=${difficulty}`
       )
       .then(({ data }) => {
-        this.setState({ questions: data.results, gameInProgress: true });
+        this.setState(
+          { questions: data.results, gameInProgress: true },
+          this.goToNextQuestion
+        );
       })
       .catch(err => {
         console.error(err);
@@ -81,40 +92,55 @@ class App extends Component {
     this.setState({ ...initState, darkMode });
   }
 
-  checkQuestion(val) {
-    let score = this.state.score;
-    if (val === this.state.questions[0].correct_answer) {
+  // Game State
+  goToNextQuestion() {
+    const questions = this.state.questions.slice();
+    if (questions.length) {
+      const currentQuestion = questions.shift();
+      const correctAnswerIndex = Math.floor(Math.random() * 4);
+      let answers = currentQuestion.incorrect_answers.slice();
+      answers.splice(correctAnswerIndex, 0, currentQuestion.correct_answer);
+      currentQuestion.answers = answers;
+      this.setState({
+        questions,
+        currentQuestion,
+        questionAnswered: false,
+        correctAnswerIndex
+      });
+    }
+    this.setState({
+      currentQuestionIndex: this.state.currentQuestionIndex + 1
+    });
+  }
+
+  checkQuestion(index) {
+    let { score, correctAnswerIndex } = this.state;
+    if (index === correctAnswerIndex) {
       score++;
     }
     this.setState({ score, questionAnswered: true });
   }
 
-  goToNextQuestion() {
-    this.setState({ currentQuestion: this.state.currentQuestion + 1 });
-    const questions = this.state.questions.slice();
-    questions.shift();
-    this.setState({ questions, questionAnswered: false });
-  }
-
   render() {
     const {
+      setDarkMode,
       setNumber,
       setCategory,
       setDifficulty,
-      setDarkMode,
       startGame,
       quitGame,
-      checkQuestion,
-      goToNextQuestion
+      goToNextQuestion,
+      checkQuestion
     } = this;
     const {
-      gameInProgress,
-      currentQuestion,
-      questionAnswered,
+      darkMode,
       number,
-      questions,
+      gameInProgress,
       score,
-      darkMode
+      questions,
+      currentQuestion,
+      currentQuestionIndex,
+      questionAnswered
     } = this.state;
 
     const renderGameInProgress = () => {
@@ -128,12 +154,13 @@ class App extends Component {
           />
           <StartGameButton darkMode={darkMode} handleStartGame={startGame} />
         </GameNotInProgress>
-      ) : questions.length ? (
+      ) : currentQuestionIndex > 0 && currentQuestionIndex <= number ? (
         <GameInProgress>
           <GameBoard
             darkMode={darkMode}
-            currentQuestion={currentQuestion}
             number={number}
+            currentQuestion={currentQuestion}
+            currentQuestionIndex={currentQuestionIndex}
             score={score}
             question={questions[0]}
             handleCheckQuestion={checkQuestion}

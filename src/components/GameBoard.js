@@ -37,43 +37,35 @@ const Answer = styled(Button)`
 
 export default class GameBoard extends Component {
   render() {
-    const { currentQuestion, number, score } = this.props;
-    const { question, correct_answer, incorrect_answers } = this.props.question;
+    const { number, score, currentQuestionIndex } = this.props;
+    const { question, answers } = this.props.currentQuestion;
 
-    const handleClick = value => {
-      this.props.handleCheckQuestion(value);
-    };
-
-    const renderRandomOrder = () => {
-      const correctAnswerIndex = Math.floor(Math.random() * 4);
-      let allAnswers = incorrect_answers.slice();
-      allAnswers.splice(correctAnswerIndex, 0, correct_answer);
-
-      return allAnswers.map(answer => {
-        return (
-          <Answer
-            key={answer}
-            darkMode={this.props.darkMode}
-            onClick={() => handleClick(answer)}
-            dangerouslySetInnerHTML={{ __html: answer }}
-          />
-        );
-      });
+    const handleClick = index => {
+      this.props.handleCheckQuestion(index);
     };
 
     return (
       <React.Fragment>
         <Scoreboard
-          currentQuestion={currentQuestion}
+          currentQuestionIndex={currentQuestionIndex}
           number={number}
           score={score}
         />
         <H3
           dangerouslySetInnerHTML={{
-            __html: currentQuestion + ") " + question
+            __html: currentQuestionIndex + ") " + question
           }}
         />
-        <Questions>{renderRandomOrder()}</Questions>
+        <Questions>
+          {answers.map((answer, index) => (
+            <Answer
+              key={answer}
+              darkMode={this.props.darkMode}
+              onClick={() => handleClick(index)}
+              dangerouslySetInnerHTML={{ __html: answer }}
+            />
+          ))}
+        </Questions>
       </React.Fragment>
     );
   }
