@@ -24,19 +24,32 @@ const Answer = styled(Button)`
   font-family: sans-serif;
   font-weight: 700;
   width: 49%;
-  background: ${props =>
-    props.questionAnswered && props.index === props.correctAnswerIndex
-      ? "#2ECC40"
-      : "#fff"};
+  background: ${props => {
+    if (props.questionAnswered && props.index === props.correctAnswerIndex) {
+      return "#2ECC40";
+    } else if (props.questionAnswered && props.index === props.answeredIndex) {
+      return "#FF4136";
+    } else {
+      return "#fff";
+    }
+  }};
   padding-top: 3rem;
   padding-bottom: 2.5rem;
   margin-bottom: 2.5rem;
   border: solid ${props => (props.darkMode ? "#DDDDDD" : "#111111")} 3px;
   &:hover {
-    background: ${props =>
-      props.questionAnswered && props.index === props.correctAnswerIndex
-        ? "#2ECC40"
-        : "#dddddd"};
+    background: ${props => {
+      if (props.questionAnswered && props.index === props.correctAnswerIndex) {
+        return "#2ECC40";
+      } else if (
+        props.questionAnswered &&
+        props.index === props.answeredIndex
+      ) {
+        return "#FF4136";
+      } else {
+        return "#dddddd";
+      }
+    }};
     border: solid ${props => (props.darkMode ? "#fff" : "#111111")} 3px;
   }
 `;
@@ -48,7 +61,8 @@ export default class GameBoard extends Component {
       score,
       currentQuestionIndex,
       correctAnswerIndex,
-      questionAnswered
+      questionAnswered,
+      answeredIndex
     } = this.props;
     const { question, answers } = this.props.currentQuestion;
 
@@ -78,6 +92,7 @@ export default class GameBoard extends Component {
               index={index}
               correctAnswerIndex={correctAnswerIndex}
               questionAnswered={questionAnswered}
+              answeredIndex={answeredIndex}
               onClick={() => handleClick(index)}
               dangerouslySetInnerHTML={{ __html: answer }}
             />

@@ -119,7 +119,7 @@ class App extends Component {
     if (index === correctAnswerIndex) {
       score++;
     }
-    this.setState({ score, questionAnswered: true });
+    this.setState({ score, questionAnswered: true, answeredIndex: index });
   }
 
   render() {
@@ -141,7 +141,8 @@ class App extends Component {
       currentQuestion,
       currentQuestionIndex,
       correctAnswerIndex,
-      questionAnswered
+      questionAnswered,
+      answeredIndex
     } = this.state;
 
     const renderGameInProgress = () => {
@@ -163,9 +164,10 @@ class App extends Component {
             score={score}
             currentQuestion={currentQuestion}
             currentQuestionIndex={currentQuestionIndex}
-            handleCheckQuestion={checkQuestion}
             correctAnswerIndex={correctAnswerIndex}
             questionAnswered={questionAnswered}
+            answeredIndex={answeredIndex}
+            handleCheckQuestion={checkQuestion}
           />
           {questionAnswered ? (
             <Button darkMode={darkMode} onClick={goToNextQuestion}>
