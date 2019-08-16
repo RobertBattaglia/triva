@@ -137,7 +137,6 @@ class App extends Component {
       number,
       gameInProgress,
       score,
-      questions,
       currentQuestion,
       currentQuestionIndex,
       questionAnswered
@@ -159,11 +158,11 @@ class App extends Component {
           <GameBoard
             darkMode={darkMode}
             number={number}
+            score={score}
             currentQuestion={currentQuestion}
             currentQuestionIndex={currentQuestionIndex}
-            score={score}
-            question={questions[0]}
             handleCheckQuestion={checkQuestion}
+            questionAnswered={questionAnswered}
           />
           {questionAnswered ? (
             <Button darkMode={darkMode} onClick={goToNextQuestion}>

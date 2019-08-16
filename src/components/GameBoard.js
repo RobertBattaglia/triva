@@ -37,11 +37,18 @@ const Answer = styled(Button)`
 
 export default class GameBoard extends Component {
   render() {
-    const { number, score, currentQuestionIndex } = this.props;
+    const {
+      number,
+      score,
+      currentQuestionIndex,
+      questionAnswered
+    } = this.props;
     const { question, answers } = this.props.currentQuestion;
 
     const handleClick = index => {
-      this.props.handleCheckQuestion(index);
+      if (!questionAnswered) {
+        this.props.handleCheckQuestion(index);
+      }
     };
 
     return (
