@@ -1,3 +1,18 @@
+## React Trivia App
+Simple Trivia App built with create-react-app
+[Link](http://triva.herokuapp.com)
+
+Using Data from https://opentdb.com/
+
+### Correct Answer
+![](gifs/correct_answer.gif)
+
+### Incorrect Answer
+![](gifs/incorrect_answer.gif)
+
+### Dark Mode
+![](gifs/darkmode.gif)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
