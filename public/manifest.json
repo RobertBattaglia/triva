@@ -1,6 +1,6 @@
 {
-  "short_name": "Trivia App",
-  "name": "Application that uses Open Trivia DB api",
+  "short_name": "Triva",
+  "name": "Trivia Application that uses Open Trivia DB api",
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",

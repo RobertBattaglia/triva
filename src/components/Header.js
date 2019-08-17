@@ -20,7 +20,7 @@ const Label = styled.label`
 export default function Header(props) {
   return (
     <Head>
-      <h1>Trivia</h1>
+      <h1>Triva</h1>
       <div>
         <Label>
           <span style={{ marginRight: "1rem" }}>Darkmode</span>
