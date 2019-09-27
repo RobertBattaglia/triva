@@ -5,7 +5,8 @@ import { Button } from "../styles";
 import Scoreboard from "./Scoreboard";
 
 const H3 = styled.h3`
-  font-size: calc(1rem + 2vw);
+  font-size: calc(1.5rem + 1vw);
+  margin: auto 1rem;
 `;
 
 const Questions = styled.div`
@@ -34,9 +35,9 @@ const Answer = styled(Button)`
       return "#fff";
     }
   }};
-  padding-top: calc(1rem + 2vw);
-  padding-bottom: calc(1rem + 2vw);
-  margin-bottom: calc(1rem + 2vw);
+  padding-top: calc(1rem + 1vw);
+  padding-bottom: calc(1rem + 1vw);
+  margin-bottom: calc(1rem + 1vw);
   border: solid ${props => (props.darkMode ? "#DDDDDD" : "#111111")} 3px;
   &:hover {
     background: ${props => {
