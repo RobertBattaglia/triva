@@ -212,7 +212,7 @@ class App extends Component {
     return (
       <React.Fragment>
         <GlobalStyle darkMode={darkMode} />
-        <Header handleSetDarkMode={setDarkMode} />
+        <Header handleSetDarkMode={setDarkMode} inProgress={gameInProgress}/>
         {renderGameInProgress()}
       </React.Fragment>
     );

@@ -19,7 +19,7 @@ body {
       ? "linear-gradient(to bottom right, #1E1F26, #4D648D)"
       : "linear-gradient(to bottom right, #FF4136, #FFDC00)"}; 
   color: ${props => (props.darkMode ? "#fff" : "#111111")};
-  height: 100vh;
+  min-height: 100vh;
   padding: 0 5vw;
 }
 `;
