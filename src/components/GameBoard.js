@@ -5,7 +5,7 @@ import { Button } from "../styles";
 import Scoreboard from "./Scoreboard";
 
 const H3 = styled.h3`
-  font-size: 3rem;
+  font-size: calc(1rem + 2vw);
 `;
 
 const Questions = styled.div`
@@ -20,9 +20,10 @@ const Questions = styled.div`
 
 const Answer = styled(Button)`
   color: #444;
-  font-size: 2.5rem;
+  font-size: calc(1rem + 1.5vw);
   font-family: sans-serif;
   font-weight: 700;
+  vertical-align: center;
   width: 49%;
   background: ${props => {
     if (props.questionAnswered && props.index === props.correctAnswerIndex) {
@@ -33,9 +34,9 @@ const Answer = styled(Button)`
       return "#fff";
     }
   }};
-  padding-top: 3rem;
-  padding-bottom: 2.5rem;
-  margin-bottom: 2.5rem;
+  padding-top: calc(1rem + 2vw);
+  padding-bottom: calc(1rem + 2vw);
+  margin-bottom: calc(1rem + 2vw);
   border: solid ${props => (props.darkMode ? "#DDDDDD" : "#111111")} 3px;
   &:hover {
     background: ${props => {
@@ -51,6 +52,9 @@ const Answer = styled(Button)`
       }
     }};
     border: solid ${props => (props.darkMode ? "#fff" : "#111111")} 3px;
+  }
+  @media (max-width: 768px) {
+    width: 95%
   }
 `;
 
