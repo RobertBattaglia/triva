@@ -19,7 +19,7 @@ body {
       ? "linear-gradient(to bottom right, #1E1F26, #4D648D)"
       : "linear-gradient(to bottom right, #FF4136, #FFDC00)"}; 
   color: ${props => (props.darkMode ? "#fff" : "#111111")};
-  height: 100vh;
+  min-height: 100vh;
   padding: 0 5vw;
 }
 `;
@@ -35,8 +35,8 @@ export const Button = styled.div`
   border: solid ${props => (props.darkMode ? "#fff" : "#111111")} 3px;
   border-radius: 1.5rem;
   box-shadow: 0.25rem 0.5rem 1rem rgba(0, 0, 0, 0.8);
+  transition-duration: 1500;
   &:hover {
-    transform: translateY(-5%);
     box-shadow: 0.5rem 1rem 2rem rgba(0, 0, 0, 0.6);
     background: ${props =>
       props.darkMode
@@ -52,7 +52,7 @@ export const Button = styled.div`
 export const Select = styled.select`
   display: block;
   margin: 1rem auto;
-  font-size: 1.6rem;
+  font-size: calc(1rem + 1vw);
   font-family: sans-serif;
   font-weight: 700;
   color: #444;

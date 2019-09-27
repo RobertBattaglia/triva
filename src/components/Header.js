@@ -9,6 +9,10 @@ const Head = styled.header`
   font-size: 2rem;
   text-align: center;
   font-family: "Ultra", serif;
+
+  @media (max-width: 768px)  {
+   margin: ${props => (props.inProgress ? '5vh auto' : '5vh auto 10vh')}; 
+  }
 `;
 
 const Label = styled.label`
@@ -19,7 +23,7 @@ const Label = styled.label`
 
 export default function Header(props) {
   return (
-    <Head>
+    <Head inProgress={props.inProgress}>
       <h1>Triva</h1>
       <div>
         <Label>

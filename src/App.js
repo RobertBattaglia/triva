@@ -5,6 +5,7 @@ import styled from "styled-components";
 
 import { GlobalStyle, Button } from "./styles";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 import CategorySelect from "./components/CategorySelect";
 import DifficultySelect from "./components/DifficultySelect";
 import NumberSelect from "./components/NumberSelect";
@@ -210,11 +211,12 @@ class App extends Component {
     };
 
     return (
-      <React.Fragment>
+      <>
         <GlobalStyle darkMode={darkMode} />
-        <Header handleSetDarkMode={setDarkMode} />
+        <Header handleSetDarkMode={setDarkMode} inProgress={gameInProgress}/>
         {renderGameInProgress()}
-      </React.Fragment>
+        <Footer />
+      </>
     );
   }
 }
