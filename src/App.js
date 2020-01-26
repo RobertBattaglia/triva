@@ -60,7 +60,7 @@ class App extends Component {
 
   // Game Settings
   setNumber(value) {
-    this.setState({ number: value });
+    this.setState({ number: Number.parseInt(value, 10) });
   }
 
   setCategory(value) {
